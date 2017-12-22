@@ -1,4 +1,4 @@
 "info":
-  "username": "cc"
-  "hostip": "129.114.108.78"
-  "keyfilepath": "/Users/Adhita/chamcloud.key"
+  "username": "hostname"
+  "hostip": "127.0.0.1"
+  "keyfilepath": "/Users/Name/cloud.key"
