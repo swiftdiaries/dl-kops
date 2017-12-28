@@ -66,27 +66,28 @@
             </div>
             <div class="mdl-card__supporting-text mdl-color-text--primary">
               <form action="/result" method="post">
-                <div class="form-group">
-                    <label for="hostname">Hostname:&nbsp;&nbsp;</label>
-                    <input type="text" class="form-control" name="username" placeholder="ubuntu">&nbsp;&nbsp;
-                </div>
-                <div class="form-group">
-                    <label for="hostip">Host IP:&nbsp;&nbsp;</label>
-                    <input type="text" class="form-control" name="hostip" placeholder="0.0.0.0">&nbsp;&nbsp;
-                </div>
-                <div class="form-group">
-                    <label for="keyfile">Keyfile:&nbsp;&nbsp;</label><br>
-                    <input type="text" class="form-group" name="keyfilepath" placeholder="~/cloud.pem">&nbsp;&nbsp;
-                    <input type="file" id="file" hidden>
-                        <label for="file" class="mdl-button mdl-js-button mdl-button--fab mdl-button--icon mdl-button--colored">
-                        <i class="material-icons">cloud_upload</i>
-                        </label>
-                </div>
-                <br><br>
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                      <label class="sr-only" for="inlineFormInput">Hostname</label>
+                      <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="ubuntu">
+                    </div>
+                    <div class="col-auto">
+                      <label class="sr-only" for="inlineFormInputGroup"></label>
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">@</div>
+                        </div>
+                        <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0.0.1">
+                      </div>
+                    </div>
+                      <div class="col-auto">
+                          <label class="sr-only" for="inlineFormInput">Keyfile</label>
+                          <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="~/cloud.pem">
+                        </div> <br>
                 <div class="button-holder">
                   <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Setup!">
                 </div>
-                </form>
+              </form>
               </div>
           </section>
         </div>
@@ -99,7 +100,7 @@
                 </div>
                 <div class="mdl-card__supporting-text mdl-color-text--cyan-600">
                   This is a web-app written in Go.<br>
-                  Thank you for visiting. 
+                  Thank you for visiting.<br><br> 
                   <div class="mdl-card_actions">
                       <a href="https://github.com/swiftdiaries/dl-kops" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">View Source</a> <br> <br> <br>
                     </div>
