@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+
+	"github.com/swiftdiaries/dl-kops/src/app/backend"
 )
 
 var (
@@ -18,18 +20,29 @@ func main() {
 
 	fileServerIndex := http.FileServer(http.Dir("./src/app/frontend/index/"))
 	http.Handle("/", fileServerIndex)
-	http.HandleFunc("/result", output)
+	http.HandleFunc("/result", Output)
 	fileServerResult := http.FileServer(http.Dir("./result/"))
 	http.Handle("/display", fileServerResult)
-	fmt.Print("Serving on http://localhost:" + port + "/")
+	fmt.Print("Serving on http://localhost:" + port + "/\n")
+	go open("http://localhost:" + port + "/")
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
-func output(w http.ResponseWriter, r *http.Request) {
+//Output is used to display the :port/result call
+func Output(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "POST" {
 		r.ParseForm()
-		fmt.Println(r.Form["username"], r.Form["phonenumber"])
+
+		fmt.Printf("name:%s,\nip:%s\nkey:%s\n", r.Form["hostname"][0], r.Form["hostip"][0], r.Form["keyfile"][0])
+		hostname := r.Form["hostname"][0]
+		hostip := r.Form["hostip"][0]
+		keyfile := r.Form["keyfile"][0]
+		filename := "./src/app/backend/setupkubernetes.sh"
+		outputlogs := backend.ExecuteThroughSSH(hostname, hostip, keyfile, filename)
+		//outlogs := backend.PrintLines(filename)
+		//fmt.Fprintf(w, "%s", outlogs)
+		fmt.Fprintf(w, "%s", outputlogs)
 	} else {
 		t, _ := template.ParseFiles("./result/result.html")
 		t.Execute(w, nil)

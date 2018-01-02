@@ -39,7 +39,7 @@ func KeyPair(keyFile string) (ssh.AuthMethod, error) {
 //Connect establishes a connection betwen a host and the program
 func Connect(host string, methods ...ssh.AuthMethod) (*ssh.Client, error) {
 	cfg := ssh.ClientConfig{
-		User: "cc",
+		User: "SETCloud",
 		Auth: methods,
 		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 			return nil
@@ -111,7 +111,7 @@ func main() {
 	session.Stdout = os.Stdout
 	session.Setenv("LS_COLORS", os.Getenv("LS_COLORS"))
 
-	err = session.Run("hostname")
+	err = session.Run("./setup_cluster.sh")
 
 	if err != nil {
 		log.Fatalf("Run failed:%v", err)
