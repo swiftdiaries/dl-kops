@@ -55,17 +55,18 @@
         </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary">
             <a href="#setup" class="mdl-layout__tab">Setup Kubernetes</a>
+            <a href="#controller" class="mdl-layout__tab is-active">Setup Controller</a>
             <a href="#about" class="mdl-layout__tab is-active">About</a>
           </div>
       </header>
-      <main class="mdl-layout__content1">
+      <main class="mdl-layout__content">
         <div class="mdl-layout__tab-panel mdl-color--grey-300 is-active" id="setup">    
           <section class="section--center mdl-grid mdl-color--grey-100 mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card__title mdl-color-text--primary">
               <h3 class="mdl-card__title-text mdl-color-text--primary">Setup Kubernetes for Machine Learning</h3>
             </div>
             <div class="mdl-card__supporting-text mdl-color-text--primary">
-              <h4>Master node</h4>
+              <h4>Controller node</h4>
               <form action="/result" method="post">
                 <div class="form-row align-items-center">
                     <div class="col-auto">
@@ -88,8 +89,33 @@
                     <div class="button-holder">
                       <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Setup!">
                     </div>
+                </div>
               </form>
               </div>
+          </section>
+        </div>
+      </main>
+      <main class="mdl-layout__content">
+        <div class="mdl-layout__tab-panel mdl-color--grey-300 is-active" id="controller">
+          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-color--grey-100 mdl-shadow--2dp">
+              <div class="mdl-card__title mdl-color-text--primary">
+                  <h4 class="mdl-card__title-text">Bootstrap Cluster with Kubeadm</h4>
+              </div>
+              <div class="mdl-card__supporting-text mdl-color-text--cyan-600">
+                <div class="mdl-card_actions">
+                  <form action="/setup" method="POST">
+                    <div class="form-row align-items-center">
+                        <div class="col-auto">
+                            <label class="sr-only" for="inlineFormInput">hostip</label>
+                            <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.0">
+                          </div>
+                        <div class="button-holder">
+                          <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Setup Controller!">
+                        </div>
+                    </div>
+                  </form>
+                  </div>
+                </div>
           </section>
         </div>
       </main>

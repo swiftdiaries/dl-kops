@@ -118,7 +118,8 @@ func main() {
 	shcmd := "sh"
 	var args []string
 	var output []string
-	args = []string{"./src/app/backend/setup_cluster.sh"}
+	args = []string{"./src/app/backend/trial.sh"}
+	args = append(args, "128.96.110.19")
 	cmd := exec.Command(shcmd, args...)
 	cmd.Stdin = strings.NewReader("")
 	var out bytes.Buffer
