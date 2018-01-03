@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
 	"os"
+	exec "os/exec"
 	"os/user"
+	"strings"
 
 	"github.com/spf13/viper"
 	"golang.org/x/crypto/ssh"
@@ -110,6 +114,22 @@ func main() {
 
 	session.Stdout = os.Stdout
 	session.Setenv("LS_COLORS", os.Getenv("LS_COLORS"))
+
+	shcmd := "sh"
+	var args []string
+	var output []string
+	args = []string{"./src/app/backend/setup_cluster.sh"}
+	cmd := exec.Command(shcmd, args...)
+	cmd.Stdin = strings.NewReader("")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err = cmd.Run()
+	if err != nil {
+		log.Fatalf("exec Error: %s", err)
+	}
+	fmt.Printf("%s", out.String())
+	output = append(output, out.String())
+	fmt.Println(output)
 
 	err = session.Run("./setup_cluster.sh")
 
