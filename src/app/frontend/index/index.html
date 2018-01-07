@@ -21,7 +21,7 @@
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
 
-    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="shortcut icon" href="favicon.ico">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -55,7 +55,9 @@
         </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary">
             <a href="#setup" class="mdl-layout__tab">Setup Kubernetes</a>
-            <a href="#controller" class="mdl-layout__tab is-active">Setup Controller</a>
+            <a href="#controller" class="mdl-layout__tab is-active">Bootstrap Cluster</a>
+            <a href="/jobs" class="mdl-layout__tab is-active">Submit Jobs</a>
+            <a href="/jupyter" class="mdl-layout__tab is-active">Launch Jupyter</a>
             <a href="#about" class="mdl-layout__tab is-active">About</a>
           </div>
       </header>
@@ -66,8 +68,8 @@
               <h3 class="mdl-card__title-text mdl-color-text--primary">Setup Kubernetes for Machine Learning</h3>
             </div>
             <div class="mdl-card__supporting-text mdl-color-text--primary">
-              <h4>Controller node</h4>
               <form action="/result" method="post">
+                <h4>Controller node</h4>
                 <div class="form-row align-items-center">
                     <div class="col-auto">
                       <label class="sr-only" for="inlineFormInput">hostname</label>
@@ -85,11 +87,34 @@
                       <div class="col-auto">
                           <label class="sr-only" for="inlineFormInput">keyfile</label>
                           <input type="text" name="keyfile" class="form-control mb-2" id="inlineFormInput" placeholder="~/cloud.pem">
-                        </div> <br>
-                    <div class="button-holder">
+                        </div> 
+                        <div class="button-holder">
                       <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Setup!">
                     </div>
                 </div>
+                <h4>Worker node</h4>
+                <div class="form-row align-items-center">
+                  <div class="col-auto">
+                    <label class="sr-only" for="inlineFormInput">hostname</label>
+                    <input type="text" name="hostname" class="form-control mb-2" id="inlineFormInput" placeholder="ubuntu">
+                  </div>
+                  <div class="col-auto">
+                    <label class="sr-only" for="inlineFormInputGroup">hostip</label>
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">@</div>
+                      </div>
+                      <input type="text" name="hostip" class="form-control" id="inlineFormInputGroup" placeholder="0.0.0.2">
+                    </div>
+                  </div>
+                    <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInput">keyfile</label>
+                        <input type="text" name="keyfile" class="form-control mb-2" id="inlineFormInput" placeholder="~/cloud.pem">
+                      </div> 
+                      <div class="button-holder">
+                    <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Setup!">
+                  </div>
+              </div>
               </form>
               </div>
           </section>
@@ -104,15 +129,26 @@
               <div class="mdl-card__supporting-text mdl-color-text--cyan-600">
                 <div class="mdl-card_actions">
                   <form action="/setup" method="POST">
+                    <h4 class="mdl-card__subtitle-text mdl-color-text--primary">Controller node</h4>
                     <div class="form-row align-items-center">
                         <div class="col-auto">
                             <label class="sr-only" for="inlineFormInput">hostip</label>
-                            <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.0">
+                            <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.1">
                           </div>
                         <div class="button-holder">
                           <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Setup Controller!">
                         </div>
                     </div>
+                    <h4 class="mdl-card__subtitle-text mdl-color-text--primary">Worker node</h4>
+                    <div class="form-row align-items-center">
+                      <div class="col-auto">
+                          <label class="sr-only" for="inlineFormInput">hostip</label>
+                          <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.2">
+                        </div>
+                      <div class="button-holder">
+                        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Join Worker!">
+                      </div>
+                  </div>
                   </form>
                   </div>
                 </div>

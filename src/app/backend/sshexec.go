@@ -1,29 +1,15 @@
-package main
+package backend
 
 import (
-	"bytes"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
 	"os"
-	exec "os/exec"
 	"os/user"
-	"strings"
 
-	"github.com/spf13/viper"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/agent"
 )
-
-//Config is used to load yaml config for ssh
-type Config struct {
-	Info struct {
-		Username    string `json:"username"`
-		Keyfilepath string `json:"keyfilepath"`
-		HostIP      string `json:"hostip"`
-	} `json:"info"`
-}
 
 //KeyPair creates a keypair with a path file string
 func KeyPair(keyFile string) (ssh.AuthMethod, error) {
@@ -41,9 +27,9 @@ func KeyPair(keyFile string) (ssh.AuthMethod, error) {
 }
 
 //Connect establishes a connection betwen a host and the program
-func Connect(host string, methods ...ssh.AuthMethod) (*ssh.Client, error) {
+func Connect(hostname string, host string, methods ...ssh.AuthMethod) (*ssh.Client, error) {
 	cfg := ssh.ClientConfig{
-		User: "SETCloud",
+		User: hostname,
 		Auth: methods,
 		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 			return nil
@@ -63,25 +49,10 @@ func SSHAgent() (ssh.AuthMethod, error) {
 	return ssh.PublicKeysCallback(agent.NewClient(agentSock).Signers), nil
 }
 
-func main() {
-
-	viperInstance := viper.New()
-
-	viperInstance.SetConfigName("config")
-	viperInstance.AddConfigPath(".")
-	err := viperInstance.ReadInConfig()
-	if err != nil {
-		log.Printf("Error in reading config %s", err)
-	}
-
-	var c Config
-	err = viperInstance.Unmarshal(&c)
-	if err != nil {
-		log.Printf("Error in deconding config %s", err)
-	}
+//ExecuteSSHCommand used to run a command on a host through SSH
+func ExecuteSSHCommand(hostname string, hostip string, keyfilepath string, command string) {
 
 	//Key File location+creation
-	keyfilepath := c.Info.Keyfilepath
 	if keyfilepath == "" {
 		usr, _ := user.Current()
 		keyfilepath = usr.HomeDir + os.Getenv("kubekeyconfig")
@@ -99,7 +70,7 @@ func main() {
 	}
 
 	//Client creation
-	client, err := Connect(c.Info.HostIP+":22", agent, keyPair)
+	client, err := Connect(hostname, hostip+":22", agent, keyPair)
 	if err != nil {
 		log.Printf("Error creating client %s", err)
 	}
@@ -115,24 +86,7 @@ func main() {
 	session.Stdout = os.Stdout
 	session.Setenv("LS_COLORS", os.Getenv("LS_COLORS"))
 
-	shcmd := "sh"
-	var args []string
-	var output []string
-	args = []string{"./src/app/backend/trial.sh"}
-	args = append(args, "128.96.110.19")
-	cmd := exec.Command(shcmd, args...)
-	cmd.Stdin = strings.NewReader("")
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err = cmd.Run()
-	if err != nil {
-		log.Fatalf("exec Error: %s", err)
-	}
-	fmt.Printf("%s", out.String())
-	output = append(output, out.String())
-	fmt.Println(output)
-
-	err = session.Run("./setup_cluster.sh")
+	err = session.Run("./controllerkubeup.sh")
 
 	if err != nil {
 		log.Fatalf("Run failed:%v", err)

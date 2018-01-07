@@ -8,15 +8,29 @@
 #		$SSH_CMD $username@$server "sudo sed -i -e 's/127.0.0.1 localhost/127.0.0.1 localhost \n127.0.0.1 $HOSTNAME/g' /etc/hosts" &
 #done	
 #wait
+if [ -z "$1" ]
+then
+	hostname="cc"
+else
+	hostname="$1"
+fi
+if [ -z "$2" ]
+then
+	keyfile=~/chameleon.pem
+else
+	keyfile="$2"
+fi
+if [ -z "$3" ]
+then
+	hostip="129.114.108.146"
+else
+	hostip="$3"
+fi
 
-master="SETCloud";
-masterIP="128.110.96.19"
-keyfile="~/cloud.key"
 SSH_CMD="ssh -i $keyfile"
 SCP_CMD="scp"
 
 # setup kubernetes on master
-$SSH_CMD $master@$masterIP 'bash -s' < ./src/app/backend/setupkubernetes.sh 
-$SCP_CMD ./src/app/backend/masterkubeup.sh $master@$masterIP:~/ 
-$SSH_CMD $master@$masterIP chmod +x masterkubeup.sh 
-SSH_CMD $master@$masterIP ./masterkubeup.sh
+$SSH_CMD $hostname@$hostip 'bash -s' < ./src/app/backend/setupkubernetes.sh 
+#$SCP_CMD ./src/app/backend/controllerkubeup.sh $hostname@$hostip:~/ 
+#$SSH_CMD $hostname@$hostip chmod +x controllerkubeup.sh 

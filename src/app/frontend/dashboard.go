@@ -10,6 +10,8 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
+
+	"github.com/swiftdiaries/dl-kops/src/app/frontend/jobs"
 )
 
 var (
@@ -22,6 +24,8 @@ func main() {
 	http.Handle("/", fileServerIndex)
 	http.HandleFunc("/result", Output)
 	http.HandleFunc("/setup", SetupController)
+	http.HandleFunc("/jobs", jobs.JobSubmitHandler)
+	http.HandleFunc("/submit", jobs.RunJobs)
 	//fmt.Print("Serving on http://localhost:" + port + "/\n")
 	go open("http://localhost:" + port + "/")
 	log.Fatal(http.ListenAndServe(":"+port, nil))
