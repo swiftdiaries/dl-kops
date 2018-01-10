@@ -40,8 +40,8 @@ func SetupController(w http.ResponseWriter, r *http.Request) {
 		shcmd := "sh"
 		var args []string
 		var output []string
-		args = []string{"./src/app/backend/trial.sh", hostip}
-		//args = []string{"./src/app/backend/controllerkubeup.sh", hostip}
+		//args = []string{"./src/app/backend/trial.sh", hostip}
+		args = []string{"./src/app/backend/controllerkubeup.sh", hostip}
 		fmt.Printf("Args: %s", args)
 		//args = append(args, tempargs)
 		cmd := exec.Command(shcmd, args...)
@@ -73,8 +73,8 @@ func Output(w http.ResponseWriter, r *http.Request) {
 		shcmd := "sh"
 		var args []string
 		var output []string
-		args = []string{"./src/app/backend/trial.sh", hostname, keyfile, hostip}
-		//args = []string{"./src/app/backend/setup_cluster.sh", hostname, keyfile, hostip}
+		//args = []string{"./src/app/backend/trial.sh", hostname, keyfile, hostip}
+		args = []string{"./src/app/backend/setup_cluster.sh", hostname, keyfile, hostip}
 		fmt.Printf("Args: %s", args)
 		//args = append(args, tempargs)
 		cmd := exec.Command(shcmd, args...)

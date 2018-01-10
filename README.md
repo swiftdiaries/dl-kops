@@ -6,7 +6,7 @@ Description
 
 This app is to simplify machine learning on Kubernetes for beginners.
 
-It is a work in progress. A finished version should be available in the coming weeks.
+**NOTE:** This is a work in progress. 
 
 * MVP of an end-to-end deployment app for machine learning jobs on Kubernetes clusters.
 * Enables single click installation of CUDA, CuDNN, Kubernetes components.
@@ -24,14 +24,14 @@ Future Work
 
 Setup
 -----
-
+```bash
      cd $GOPATH/src
      mkdir -p github.com/swiftdiaries
      cd github.com/swiftdiaries/
      git clone github.com/swiftdiaries/dl-kops
      cd dl-kops
      go run src/app/frontend/dashboard.go
-     
+    ``` 
      Go to http://localhost:8080/ on your browser.
 
 
