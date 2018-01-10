@@ -2,10 +2,10 @@ dl-kops
 =======
 
 <p align="center"><b>This app is to simplify machine learning on Kubernetes for beginners.</b></p>
-<p align="center">
-  <a href="https://goreportcard.com/report/github.com/swiftdiaries/dl-kops"><img src="https://goreportcard.com/report/github.com/swiftdiaries/dl-kops" alt="Go Report Card"></img></a>
-</p>
 
+<p align="center">
+<img src="https://goreportcard.com/badge/github.com/swiftdiaries/dl-kops" alt="Go Report">
+</p>
 
 About
 -----------
