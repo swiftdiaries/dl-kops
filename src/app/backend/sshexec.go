@@ -26,7 +26,7 @@ func KeyPair(keyFile string) (ssh.AuthMethod, error) {
 	return ssh.PublicKeys(key), nil
 }
 
-//Connect establishes a connection betwen a host and the program
+//Connect establishes a connection between a host and the program
 func Connect(hostname string, host string, methods ...ssh.AuthMethod) (*ssh.Client, error) {
 	cfg := ssh.ClientConfig{
 		User: hostname,

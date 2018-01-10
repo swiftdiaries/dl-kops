@@ -1,7 +1,7 @@
 dl-kops
 =======
 
-Description
+About
 -----------
 
 This app is to simplify machine learning on Kubernetes for beginners.
