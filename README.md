@@ -31,8 +31,9 @@ Setup
      git clone github.com/swiftdiaries/dl-kops
      cd dl-kops
      go run src/app/frontend/dashboard.go
-    ``` 
-     Go to http://localhost:8080/ on your browser.
+``` 
+
+Go to http://localhost:8080/ on your browser.
 
 
 Landing Page
