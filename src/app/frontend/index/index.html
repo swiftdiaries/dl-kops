@@ -68,12 +68,12 @@
               <h3 class="mdl-card__title-text mdl-color-text--primary">Setup Kubernetes for Machine Learning</h3>
             </div>
             <div class="mdl-card__supporting-text mdl-color-text--primary">
-              <form action="/result" method="post">
+              <form action="/installcontroller" method="post">
                 <h4>Controller node</h4>
                 <div class="form-row align-items-center">
                     <div class="col-auto">
                       <label class="sr-only" for="inlineFormInput">hostname</label>
-                      <input type="text" name="hostname" class="form-control mb-2" id="inlineFormInput" placeholder="ubuntu">
+                      <input type="text" name="hostname" class="form-control mb-2" id="inlineFormInput" placeholder="ubuntu" required>
                     </div>
                     <div class="col-auto">
                       <label class="sr-only" for="inlineFormInputGroup">hostip</label>
@@ -92,11 +92,14 @@
                       <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Setup!">
                     </div>
                 </div>
+              </form>
+              <br>
+              <form action="/installworker" method="post">
                 <h4>Worker node</h4>
                 <div class="form-row align-items-center">
                   <div class="col-auto">
                     <label class="sr-only" for="inlineFormInput">hostname</label>
-                    <input type="text" name="hostname" class="form-control mb-2" id="inlineFormInput" placeholder="ubuntu">
+                    <input type="text" name="hostname" class="form-control mb-2" id="inlineFormInput" placeholder="ubuntu" required>
                   </div>
                   <div class="col-auto">
                     <label class="sr-only" for="inlineFormInputGroup">hostip</label>
@@ -128,23 +131,30 @@
               </div>
               <div class="mdl-card__supporting-text mdl-color-text--cyan-600">
                 <div class="mdl-card_actions">
-                  <form action="/setup" method="POST">
+                  <form action="/setupcontroller" method="POST">
                     <h4 class="mdl-card__subtitle-text mdl-color-text--primary">Controller node</h4>
                     <div class="form-row align-items-center">
                         <div class="col-auto">
                             <label class="sr-only" for="inlineFormInput">hostip</label>
-                            <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.1">
+                            <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.1" required>
                           </div>
                         <div class="button-holder">
                           <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Setup Controller!">
                         </div>
                     </div>
+                  </form>
+                  <br>
+                  <form action="/setupworker" method="POST">
                     <h4 class="mdl-card__subtitle-text mdl-color-text--primary">Worker node</h4>
                     <div class="form-row align-items-center">
                       <div class="col-auto">
                           <label class="sr-only" for="inlineFormInput">hostip</label>
-                          <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.2">
-                        </div>
+                          <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.2" required>
+                      </div>
+                      <div class="col-auto">
+                        <label class="sr-only mdl-textfield__label" for="inlineFormInput">jointoken</label>
+                        <textarea class="form-control mdl-textfield__input mb-2" name="jointoken" id="jointoken" rows="1" placeholder="Join token" required></textarea>
+                      </div>  
                       <div class="button-holder">
                         <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Join Worker!">
                       </div>

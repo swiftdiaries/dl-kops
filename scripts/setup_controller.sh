@@ -16,13 +16,13 @@ else
 fi
 if [ -z "$2" ]
 then
-	keyfile=~/chameleon.pem
+	keyfile=~/keyfile.pem
 else
 	keyfile="$2"
 fi
 if [ -z "$3" ]
 then
-	hostip="129.114.108.146"
+	hostip="0.0.0.1"
 else
 	hostip="$3"
 fi
@@ -31,6 +31,6 @@ SSH_CMD="ssh -i $keyfile"
 SCP_CMD="scp"
 
 # setup kubernetes on master
-$SSH_CMD $hostname@$hostip 'bash -s' < ./src/app/backend/setupkubernetes.sh 
-#$SCP_CMD ./src/app/backend/controllerkubeup.sh $hostname@$hostip:~/ 
+$SSH_CMD $hostname@$hostip 'bash -s' < ./scripts/setupkubernetes.sh 
+#$SCP_CMD ./scripts/controllerkubeup.sh $hostname@$hostip:~/ 
 #$SSH_CMD $hostname@$hostip chmod +x controllerkubeup.sh 

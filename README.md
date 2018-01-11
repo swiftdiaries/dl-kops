@@ -1,7 +1,7 @@
 dl-kops
 =======
 
-<p align="center">
+<p align="left">
 <img src="https://goreportcard.com/badge/github.com/swiftdiaries/dl-kops" alt="Go Report">
 </p>
 

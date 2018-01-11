@@ -1,16 +1,15 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
 	"runtime"
-	"strings"
 
+	"github.com/swiftdiaries/dl-kops/src/app/backend/controller"
+	"github.com/swiftdiaries/dl-kops/src/app/backend/worker"
 	"github.com/swiftdiaries/dl-kops/src/app/frontend/jobs"
 )
 
@@ -22,69 +21,14 @@ func main() {
 
 	fileServerIndex := http.FileServer(http.Dir("./src/app/frontend/index/"))
 	http.Handle("/", fileServerIndex)
-	http.HandleFunc("/result", Output)
-	http.HandleFunc("/setup", SetupController)
+	http.HandleFunc("/installcontroller", controller.InstallController)
+	http.HandleFunc("/setupcontroller", controller.SetupController)
+	http.HandleFunc("/installworker", worker.InstallWorker)
+	http.HandleFunc("/setupworker", worker.SetupWorker)
 	http.HandleFunc("/jobs", jobs.JobSubmitHandler)
 	http.HandleFunc("/submit", jobs.RunJobs)
 	go open("http://localhost:" + port + "/")
 	log.Fatal(http.ListenAndServe(":"+port, nil))
-}
-
-//SetupController is used to setup kubernetes on the controller node
-func SetupController(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("method:", r.Method)
-	if r.Method == "POST" {
-		r.ParseForm()
-		hostip := r.Form["hostip"][0]
-		shcmd := "sh"
-		var args []string
-		var output []string
-		args = []string{"./scripts/controllerkubeup.sh", hostip}
-		cmd := exec.Command(shcmd, args...)
-		cmd.Stdin = strings.NewReader("")
-		var out bytes.Buffer
-		cmd.Stdout = &out
-		err := cmd.Run()
-		if err != nil {
-			log.Fatalf("exec Error: %s", err)
-		}
-		output = append(output, out.String())
-
-		fmt.Fprintf(w, "%s", output)
-	}
-}
-
-//Output is used to display the :port/result call
-func Output(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("method:", r.Method)
-	if r.Method == "POST" {
-		r.ParseForm()
-
-		//fmt.Printf("name:%s,\nip:%s\nkey:%s\n", r.Form["hostname"], r.Form["hostip"], r.Form["keyfile"])
-		hostname := r.Form["hostname"][0]
-		hostip := r.Form["hostip"][0]
-		keyfile := r.Form["keyfile"][0]
-		shcmd := "sh"
-		var args []string
-		var output []string
-		args = []string{"./scripts/setup_cluster.sh", hostname, keyfile, hostip}
-		fmt.Printf("Args: %s", args)
-		//args = append(args, tempargs)
-		cmd := exec.Command(shcmd, args...)
-		cmd.Stdin = strings.NewReader("")
-		var out bytes.Buffer
-		cmd.Stdout = &out
-		err := cmd.Run()
-		if err != nil {
-			log.Fatalf("exec Error: %s", err)
-		}
-		output = append(output, out.String())
-
-		fmt.Fprintf(w, "%s", output)
-	} else {
-		t, _ := template.ParseFiles("./result/result.html")
-		t.Execute(w, nil)
-	}
 }
 
 func open(url string) error {
