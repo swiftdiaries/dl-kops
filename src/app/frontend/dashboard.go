@@ -26,7 +26,6 @@ func main() {
 	http.HandleFunc("/setup", SetupController)
 	http.HandleFunc("/jobs", jobs.JobSubmitHandler)
 	http.HandleFunc("/submit", jobs.RunJobs)
-	//fmt.Print("Serving on http://localhost:" + port + "/\n")
 	go open("http://localhost:" + port + "/")
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
@@ -40,10 +39,7 @@ func SetupController(w http.ResponseWriter, r *http.Request) {
 		shcmd := "sh"
 		var args []string
 		var output []string
-		//args = []string{"./src/app/backend/trial.sh", hostip}
-		args = []string{"./src/app/backend/controllerkubeup.sh", hostip}
-		fmt.Printf("Args: %s", args)
-		//args = append(args, tempargs)
+		args = []string{"./scripts/controllerkubeup.sh", hostip}
 		cmd := exec.Command(shcmd, args...)
 		cmd.Stdin = strings.NewReader("")
 		var out bytes.Buffer
@@ -52,7 +48,6 @@ func SetupController(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatalf("exec Error: %s", err)
 		}
-		//fmt.Printf("%s", out.String())
 		output = append(output, out.String())
 
 		fmt.Fprintf(w, "%s", output)
@@ -65,16 +60,14 @@ func Output(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		r.ParseForm()
 
-		//fmt.Printf("name:%s,\nip:%s\nkey:%s\n", r.Form["hostname"][0], r.Form["hostip"][0], r.Form["keyfile"][0])
+		//fmt.Printf("name:%s,\nip:%s\nkey:%s\n", r.Form["hostname"], r.Form["hostip"], r.Form["keyfile"])
 		hostname := r.Form["hostname"][0]
 		hostip := r.Form["hostip"][0]
 		keyfile := r.Form["keyfile"][0]
-		//filename := "./src/app/backend/trial.sh"
 		shcmd := "sh"
 		var args []string
 		var output []string
-		//args = []string{"./src/app/backend/trial.sh", hostname, keyfile, hostip}
-		args = []string{"./src/app/backend/setup_cluster.sh", hostname, keyfile, hostip}
+		args = []string{"./scripts/setup_cluster.sh", hostname, keyfile, hostip}
 		fmt.Printf("Args: %s", args)
 		//args = append(args, tempargs)
 		cmd := exec.Command(shcmd, args...)
@@ -85,7 +78,6 @@ func Output(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatalf("exec Error: %s", err)
 		}
-		//fmt.Printf("%s", out.String())
 		output = append(output, out.String())
 
 		fmt.Fprintf(w, "%s", output)

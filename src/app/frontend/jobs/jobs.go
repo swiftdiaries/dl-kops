@@ -30,7 +30,7 @@ func RunJobs(w http.ResponseWriter, r *http.Request) {
 		for _, command := range r.Form["command"] {
 			jobTemplate.Command += " " + command
 		}
-		t, err := template.ParseFiles("./src/app/backend/cpu-job-template.yaml")
+		t, err := template.ParseFiles("./templates/cpu-job-template.yaml")
 		if err != nil {
 			fmt.Printf("Error in templating: %s", err)
 		}
