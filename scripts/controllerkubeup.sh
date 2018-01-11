@@ -1,7 +1,5 @@
 #!/bin/bash
 #usage: ./masterkubeup.sh [masterIPaddress]
-sudo swapoff -a
-sudo kubeadm reset 
 if [ -z "$1" ]
 then
 	ipaddress="0.0.0.1"
@@ -18,6 +16,7 @@ do
     FILE_NAME=$file
 done
 echo "Chosen ${FILE_NAME} as kubeadm.conf"
+sudo swapoff -a
 sudo sed -i -e 's/ExecStart=\/usr\/bin\/kubelet /ExecStart=\/usr\/bin\/kubelet --feature-gates="Accelerators=true" /g' $FILE_NAME
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
