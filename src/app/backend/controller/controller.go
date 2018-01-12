@@ -81,7 +81,7 @@ func GetToken(w http.ResponseWriter, r *http.Request) {
 		var args []string
 		var output []string
 		//args = []string{"./scripts/trial.sh", hostname, keyfile, hostip}
-		args = []string{"./scripts/setup_controller.sh", hostname, keyfile, hostip}
+		args = []string{"kubeadm generate token", hostname, keyfile, hostip}
 		fmt.Printf("Args: %s", args)
 		cmd := exec.Command(shcmd, args...)
 		cmd.Stdin = strings.NewReader("")

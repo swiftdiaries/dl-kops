@@ -86,7 +86,7 @@ func ExecuteSSHCommand(hostname string, hostip string, keyfilepath string, comma
 	session.Stdout = os.Stdout
 	session.Setenv("LS_COLORS", os.Getenv("LS_COLORS"))
 
-	err = session.Run("./controllerkubeup.sh")
+	err = session.Run(command)
 
 	if err != nil {
 		log.Fatalf("Run failed:%v", err)
