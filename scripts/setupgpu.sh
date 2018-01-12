@@ -1,10 +1,11 @@
 #!/bin/bash
 #usage: ./setupgpu.sh
+DRIVER_VERSION=384
 echo "################################# Install nvidia-375 ######################################"
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository -y ppa:graphics-drivers
 sudo apt-get update
-sudo apt install -y nvidia-375
+sudo apt install -y nvidia-$DRIVER_VERSION
 echo "######################### CUDA, CuDNN ##########################################"
 sudo apt-get install -y linux-headers-$(uname -r)
 wget https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb
