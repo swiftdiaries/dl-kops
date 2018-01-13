@@ -134,9 +134,22 @@
                   <form action="/setupcontroller" method="POST">
                     <h4 class="mdl-card__subtitle-text mdl-color-text--primary">Controller node</h4>
                     <div class="form-row align-items-center">
+                      <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInput">hostname</label>
+                        <input type="text" name="hostname" class="form-control mb-2" id="inlineFormInput" placeholder="ubuntu" required>
+                      </div>
+                      <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInputGroup">hostip</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">@</div>
+                          </div>
+                          <input type="text" name="hostip" class="form-control" id="inlineFormInputGroup" placeholder="0.0.0.2">
+                        </div>
+                      </div>
                         <div class="col-auto">
-                            <label class="sr-only" for="inlineFormInput">hostip</label>
-                            <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.1" required>
+                            <label class="sr-only" for="inlineFormInput">keyfile</label>
+                            <input type="text" name="keyfile" class="form-control mb-2" id="inlineFormInput" placeholder="~/cloud.pem">
                           </div>
                         <div class="button-holder">
                           <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Setup Controller!">
@@ -146,27 +159,74 @@
                   <br>
                   <form action="/gettoken" method="POST">
                     <h4 class="mdl-card__subtitle-text mdl-color-text--primary">Get Join Token</h4>
+                    <div class="form-row align-items-center">
+                      <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInput">hostname</label>
+                        <input type="text" name="hostname" class="form-control mb-2" id="inlineFormInput" placeholder="ubuntu" required>
+                      </div>
+                      <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInputGroup">hostip</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">@</div>
+                          </div>
+                          <input type="text" name="hostip" class="form-control" id="inlineFormInputGroup" placeholder="0.0.0.2">
+                        </div>
+                      </div>
+                        <div class="col-auto">
+                            <label class="sr-only" for="inlineFormInput">keyfile</label>
+                            <input type="text" name="keyfile" class="form-control mb-2" id="inlineFormInput" placeholder="~/cloud.pem">
+                          </div>
                      <div class="button-holder">
                         <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Generate!">
                       </div>            
                   </form>
                   <br>
-                  <form action="/setupworker" method="POST">
-                    <h4 class="mdl-card__subtitle-text mdl-color-text--primary">Worker node</h4>
-                    <div class="form-row align-items-center">
-                      <div class="col-auto">
-                          <label class="sr-only" for="inlineFormInput">hostip</label>
-                          <input type="text" name="hostip" class="form-control mb-2" id="inlineFormInput" placeholder="0.0.0.2" required>
-                      </div>
-                      <div class="col-auto">
-                        <label class="sr-only mdl-textfield__label" for="inlineFormInput">jointoken</label>
-                        <textarea class="form-control mdl-textfield__input mb-2" name="jointoken" id="jointoken" rows="1" placeholder="Join token" required></textarea>
-                      </div>  
-                      <div class="button-holder">
-                        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Join Worker!">
-                      </div>
-                  </div>
+                  <div class="mdl-card_actions">
+                    <form action="/setupworker" method="POST">
+                      <h4 class="mdl-card__subtitle-text mdl-color-text--primary">Worker node</h4>
+                      <div class="form-row align-items-center">
+                        <div class="col-auto">
+                          <label class="sr-only" for="inlineFormInput">hostname</label>
+                          <input type="text" name="hostname" class="form-control mb-2" id="inlineFormInput" placeholder="ubuntu" required>
+                        </div>
+                        <div class="col-auto">
+                          <label class="sr-only" for="inlineFormInputGroup">hostip</label>
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">@</div>
+                            </div>
+                            <input type="text" name="hostip" class="form-control" id="inlineFormInputGroup" placeholder="0.0.0.2">
+                          </div>
+                        </div>
+                          <div class="col-auto">
+                              <label class="sr-only" for="inlineFormInput">keyfile</label>
+                              <input type="text" name="keyfile" class="form-control mb-2" id="inlineFormInput" placeholder="~/cloud.pem">
+                            </div>
+                        <br>    
+                        <div class="col-sm-2">
+                          <label class="sr-only mdl-textfield__label" for="inlineFormInput">jointoken</label>
+                          <textarea class="form-control mdl-textfield__input mb-2" name="jointoken" id="jointoken" rows="1" placeholder="Join token" required></textarea>
+                        </div>  
+                        <div class="col-auto">
+                          <label class="sr-only" for="inlineFormInputGroup">masterip</label>
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">@</div>
+                            </div>
+                            <input type="text" name="masterip" class="form-control" id="inlineFormInputGroup" placeholder="MasterIP">
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <label class="sr-only mdl-textfield__label" for="inlineFormInput">certs</label>
+                          <textarea class="form-control mdl-textfield__input mb-2" name="certs" id="certs" rows="1" placeholder="Discovery certs" required></textarea>
+                        </div>
+                        <div class="button-holder col-sm-2">
+                          <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Join Worker!">
+                        </div>
+                    </div>
                   </form>
+                  </div>
                   </div>
                 </div>
           </section>

@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"bytes"
 	"io/ioutil"
 	"log"
 	"net"
@@ -50,7 +51,7 @@ func SSHAgent() (ssh.AuthMethod, error) {
 }
 
 //ExecuteSSHCommand used to run a command on a host through SSH
-func ExecuteSSHCommand(hostname string, hostip string, keyfilepath string, command string) {
+func ExecuteSSHCommand(hostname string, hostip string, keyfilepath string, command string) []string {
 
 	//Key File location+creation
 	if keyfilepath == "" {
@@ -79,16 +80,21 @@ func ExecuteSSHCommand(hostname string, hostip string, keyfilepath string, comma
 	//Session creation
 	session, err := client.NewSession()
 	if err != nil {
-		log.Fatalf("session failed:%v", err)
+		log.Printf("session failed:%v", err)
 	}
 	defer session.Close()
 
-	session.Stdout = os.Stdout
+	var out bytes.Buffer
+	var output []string
+	session.Stdout = &out
 	session.Setenv("LS_COLORS", os.Getenv("LS_COLORS"))
 
 	err = session.Run(command)
 
 	if err != nil {
-		log.Fatalf("Run failed:%v", err)
+		log.Printf("Run failed:%v", err)
 	}
+	output = append(output, out.String())
+
+	return output
 }

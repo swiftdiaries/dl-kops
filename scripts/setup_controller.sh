@@ -32,5 +32,5 @@ SCP_CMD="scp"
 
 # setup kubernetes on master
 $SSH_CMD $hostname@$hostip 'bash -s' < ./scripts/setupkubernetes.sh 
-#$SCP_CMD ./scripts/controllerkubeup.sh $hostname@$hostip:~/ 
-#$SSH_CMD $hostname@$hostip chmod +x controllerkubeup.sh 
+$SCP_CMD ./scripts/controllerkubeup.sh $hostname@$hostip:~/ 
+$SSH_CMD $hostname@$hostip chmod +x controllerkubeup.sh 

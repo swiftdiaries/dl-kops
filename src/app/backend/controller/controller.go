@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/alecthomas/template"
+	"github.com/swiftdiaries/dl-kops/src/app/backend"
 )
 
 //SetupController is used to setup kubernetes on the controller node
@@ -16,22 +17,27 @@ func SetupController(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "POST" {
 		r.ParseForm()
+		hostname := r.Form["hostname"][0]
 		hostip := r.Form["hostip"][0]
-		shcmd := "sh"
-		var args []string
+		keyfile := r.Form["keyfile"][0]
 		var output []string
 		//args = []string{"./scripts/trial.sh", hostip}
-		args = []string{"./scripts/controllerkubeup.sh", hostip}
-		cmd := exec.Command(shcmd, args...)
-		cmd.Stdin = strings.NewReader("")
-		var out bytes.Buffer
-		cmd.Stdout = &out
-		err := cmd.Run()
-		if err != nil {
-			log.Fatalf("exec Error: %s", err)
-		}
-		output = append(output, out.String())
-
+		command := "./controllerkubeup.sh " + hostip
+		output = backend.ExecuteSSHCommand(hostname, hostip, keyfile, command)
+		/*
+			shcmd := "sh"
+			var args []string
+			args = []string{"./scripts/controllerkubeup.sh", hostip}
+			cmd := exec.Command(shcmd, args...)
+			cmd.Stdin = strings.NewReader("")
+			var out bytes.Buffer
+			cmd.Stdout = &out
+			err := cmd.Run()
+			if err != nil {
+				log.Fatalf("exec Error: %s", err)
+			}
+			output = append(output, out.String())
+		*/
 		fmt.Fprintf(w, "%s", output)
 	}
 }
@@ -77,21 +83,24 @@ func GetToken(w http.ResponseWriter, r *http.Request) {
 		hostname := r.Form["hostname"][0]
 		hostip := r.Form["hostip"][0]
 		keyfile := r.Form["keyfile"][0]
-		shcmd := "sh"
-		var args []string
 		var output []string
-		//args = []string{"./scripts/trial.sh", hostname, keyfile, hostip}
-		args = []string{"kubeadm generate token", hostname, keyfile, hostip}
-		fmt.Printf("Args: %s", args)
-		cmd := exec.Command(shcmd, args...)
-		cmd.Stdin = strings.NewReader("")
-		var out bytes.Buffer
-		cmd.Stdout = &out
-		err := cmd.Run()
-		if err != nil {
-			log.Fatalf("exec Error: %s", err)
-		}
-		output = append(output, out.String())
+		output = backend.ExecuteSSHCommand(hostname, hostip, keyfile, "kubeadm token generate")
+		/*
+			shcmd := "sh"
+			var args []string
+			//args = []string{"./scripts/trial.sh", hostname, keyfile, hostip}
+			args = []string{"kubeadm generate token", hostname, keyfile, hostip}
+			fmt.Printf("Args: %s", args)
+			cmd := exec.Command(shcmd, args...)
+			cmd.Stdin = strings.NewReader("")
+			var out bytes.Buffer
+			cmd.Stdout = &out
+			err := cmd.Run()
+			if err != nil {
+				log.Fatalf("exec Error: %s", err)
+			}
+			output = append(output, out.String())
+		*/
 
 		fmt.Fprintf(w, "%s", output)
 	} else {

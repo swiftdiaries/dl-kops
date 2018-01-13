@@ -25,6 +25,7 @@ func main() {
 	http.HandleFunc("/setupcontroller", controller.SetupController)
 	http.HandleFunc("/installworker", worker.InstallWorker)
 	http.HandleFunc("/setupworker", worker.SetupWorker)
+	http.HandleFunc("/gettoken", controller.GetToken)
 	http.HandleFunc("/jobs", jobs.JobSubmitHandler)
 	http.HandleFunc("/submit", jobs.RunJobs)
 	go open("http://localhost:" + port + "/")
