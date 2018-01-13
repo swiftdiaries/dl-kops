@@ -18,27 +18,27 @@ spec:
         cpu: 20
         memory: 1G
     volumeMounts:
-    - name: nvidia-driver-375-82
+    - name: nvidia-driver-384-111
       mountPath: /usr/local/nvidia
       readOnly: true
     - name: libcuda-so
       mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so
     - name: libcuda-so-1
       mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.1
-    - name: libcuda-so-375-82
-      mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.375.82
+    - name: libcuda-so-384-111
+      mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.384.111
       readOnly: true
   restartPolicy: Never
   volumes:
-  - name: nvidia-driver-375-82
+  - name: nvidia-driver-384-111
     hostPath:
-      path: /usr/lib/nvidia-375
+      path: /usr/lib/nvidia-384
   - name: libcuda-so
     hostPath:
       path: /usr/lib/x86_64-linux-gnu/libcuda.so
   - name: libcuda-so-1
     hostPath:
       path: /usr/lib/x86_64-linux-gnu/libcuda.so.1
-  - name: libcuda-so-375-82
+  - name: libcuda-so-384-111
     hostPath:
-      path: /usr/lib/x86_64-linux-gnu/libcuda.so.375.82
+      path: /usr/lib/x86_64-linux-gnu/libcuda.so.384.111

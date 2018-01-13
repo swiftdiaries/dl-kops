@@ -34,7 +34,8 @@ func RunJobs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Printf("Error in templating: %s", err)
 		}
-		file, err := os.Create("jobfiles/" + jobTemplate.Name + ".yaml")
+		filename := "jobfiles/" + jobTemplate.Name + ".yaml"
+		file, err := os.Create(filename)
 		if err != nil {
 			fmt.Printf("Error in creating files: %s", err)
 		}
