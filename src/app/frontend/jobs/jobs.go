@@ -47,7 +47,8 @@ func RunJobs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Printf("Error in marshalling: %s", err)
 		}
-
+		//var output []string
+		//output =
 		fmt.Fprintf(w, string(b))
 	}
 }
