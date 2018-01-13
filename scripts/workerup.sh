@@ -19,6 +19,8 @@ then
 else
 	certs="$3"
 fi
+echo $1 $2 $3
+sudo kubeadm reset
 sudo systemctl enable docker
 sudo systemctl start docker
 sudo systemctl enable kubelet

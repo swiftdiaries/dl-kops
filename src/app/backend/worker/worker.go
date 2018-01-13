@@ -22,9 +22,10 @@ func SetupWorker(w http.ResponseWriter, r *http.Request) {
 		keyfile := r.Form["keyfile"][0]
 		masterip := r.Form["masterip"][0]
 		jointoken := r.Form["jointoken"][0]
+		certs := r.Form["certs"][0]
 		var output []string
-		command := "./workerup.sh " + jointoken + " " + masterip
-		fmt.Println("Join worker: \n" + hostname + "\n" + hostip + "\n" + keyfile + masterip + " " + jointoken)
+		command := "./workerup.sh " + jointoken + " " + masterip + " " + certs
+		fmt.Println("Join worker: \n" + hostname + "\n" + hostip + "\n" + keyfile + masterip + "\n" + jointoken + "\n" + certs)
 		output = backend.ExecuteSSHCommand(hostname, hostip, keyfile, command)
 		/*
 			shcmd := "sh"
