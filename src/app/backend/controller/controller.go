@@ -57,7 +57,7 @@ func SetupController(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		hostname, hostip, keyfile := utils.GetCreds("controller")
 		var output []string
-		command := utils.HomeDir + "/controllerkubeup.sh " + hostip
+		command := "./controllerkubeup.sh " + hostip
 		output = backend.ExecuteSSHCommand(hostname, hostip, keyfile, command)
 		fmt.Fprintf(w, "%s", output)
 	}
@@ -71,7 +71,7 @@ func InstallController(w http.ResponseWriter, r *http.Request) {
 		shcmd := "sh"
 		var args []string
 		var output []string
-		scriptfilepath := utils.HomeDir + "/scripts/setup_controller.sh "
+		scriptfilepath := utils.HomeDir + "scripts/setup_controller.sh"
 		args = []string{scriptfilepath, hostname, keyfile, hostip}
 		fmt.Printf("Args: %s", args)
 		cmd := exec.Command(shcmd, args...)
@@ -80,7 +80,7 @@ func InstallController(w http.ResponseWriter, r *http.Request) {
 		cmd.Stdout = &out
 		err := cmd.Run()
 		if err != nil {
-			log.Fatalf("exec Error: %s", err)
+			log.Printf("exec Error: %s", err)
 		}
 		output = append(output, out.String())
 		fmt.Fprintf(w, "%s", output)

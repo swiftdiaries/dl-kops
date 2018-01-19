@@ -49,73 +49,34 @@
         <div class="mdl-layout--large-screen-only mdl-layout__header-row">
         </div>
         <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-          <h1>Jobs</h1>
+          <h1>Jupyter</h1>
         </div>
         <div class="mdl-layout--large-screen-only mdl-layout__header-row">
         </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary">
-            <a href="#login" class="mdl-layout__tab">Login</a>
-            <a href="#submit" class="mdl-layout__tab">Submit Job</a>
+            <a href="#notebook" class="mdl-layout__tab">Notebook Requirements</a>
             <a href="#about" class="mdl-layout__tab is-active">About</a>
           </div>
       </header>
       <main class="mdl-layout__content">
-          <div class="mdl-layout__tab-panel mdl-color--grey-300 is-active" id="login">    
-            <section class="section--center mdl-grid mdl-color--grey-100 mdl-grid--no-spacing mdl-shadow--2dp">
-              <div class="mdl-card__title mdl-color-text--primary">
-                <h3 class="mdl-card__title-text mdl-color-text--primary">Cluster Login</h3>
-              </div>
-              <div class="mdl-card__supporting-text mdl-color-text--primary">
-                <form action="/submit" method="post">
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="name">Token</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="token" class="form-control mb-2" id="token" placeholder="token">
-                    </div>
-                      <div class="button-holder col-sm-10">
-                        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Login!">
-                      </div>
-                  </div>
-                </form>
-                </div>
-            </section>
-          </div>
-        </main>
-      <main class="mdl-layout__content">
-        <div class="mdl-layout__tab-panel mdl-color--grey-300 is-active" id="setup">    
+        <div class="mdl-layout__tab-panel mdl-color--grey-300 is-active" id="notebook">    
           <section class="section--center mdl-grid mdl-color--grey-100 mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card__title mdl-color-text--primary">
-              <h3 class="mdl-card__title-text mdl-color-text--primary">Job parameters</h3>
+              <h3 class="mdl-card__title-text mdl-color-text--primary">Notebook resources</h3>
             </div>
             <div class="mdl-card__supporting-text mdl-color-text--primary">
-              <form action="/submit" method="post">
+              <form action="/jupyter" method="post">
                 <div class="form-group row">
-                  <label class="col-sm-2 col-form-label" for="name">Name</label>
+                  <label class="col-sm-2 col-form-label" for="gpu">Nvidia GPUs</label>
                   <div class="col-sm-10">
-                    <input type="text" name="name" class="form-control mb-2" id="name" placeholder="alexnet-cpu">
+                    <input type="text" name="gpu" class="form-control mb-2" id="gpu" placeholder="1">
                   </div>
-                  <label class="col-sm-2 col-form-label" for="imagename">Image</label>
+                  <label class="col-sm-2 col-form-label" for="cpu">CPUs</label>
                     <div class="col-sm-10">
-                      <input type="text" name="imagename" class="form-control mb-2" id="imagename" placeholder="swiftdiaries/bench">
-                    </div>
-                    <label class="col-sm-2 col-form-label" for="device">Device</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="device" class="form-control mb-2" id="device" placeholder="cpu/gpu">
-                    </div>
-                    <label class="col-sm-2 col-form-label" for="command">Command</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="command" class="form-control mb-2" id="command" placeholder="python tf_cnn_benchmarks.py">
-                    </div>
-                    <label class="col-sm-2 col-form-label" for="command">Args</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="command" class="form-control mb-2" id="command" placeholder="--device=cpu --model=alexnet">
-                    </div>
-                    <label class="col-sm-2 col-form-label" for="command">Args</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="command" class="form-control mb-2" id="command" placeholder="--data_format=NHWC --batch_size=32">
+                      <input type="text" name="cpu" class="form-control mb-2" id="cpu" placeholder="20">
                     </div>
                     <div class="button-holder col-sm-10">
-                      <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Submit!">
+                      <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Launch!">
                     </div>
                 </div>
               </form>

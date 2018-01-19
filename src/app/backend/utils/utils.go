@@ -50,8 +50,9 @@ func ExecuteScriptFile(filepath string, arguments []string) []string {
 	cmd.Stdout = &out
 	err := cmd.Run()
 	if err != nil {
-		log.Fatalf("exec Error: %s", err)
+		log.Printf("exec Error: %s", err)
 	}
+	output = append(output, out.String())
 	return output
 }
 
@@ -72,6 +73,39 @@ func GetCreds(role string) (string, string, string) {
 		return cluster.Controller.Hostname, cluster.Controller.Hostip, cluster.Controller.Keyfilepath
 	}
 	return cluster.Worker.Hostname, cluster.Worker.Hostip, cluster.Worker.Keyfilepath
+}
+
+//KubectlExecuteCommand executes kubectl commands
+//example: kubectl get pods
+func KubectlExecuteCommand(command []string) []string {
+	cmd := exec.Command("kubectl", command...)
+	cmd.Stdin = strings.NewReader("")
+	var output []string
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		log.Printf("exec Error: %s", err)
+	}
+	output = append(output, out.String())
+	fmt.Printf("%s", output)
+	return output
+}
+
+//KubectlExecuteYaml - example. kubectl apply -f <file.yaml>
+func KubectlExecuteYaml(filepath string) []string {
+	cmd := exec.Command("kubectl", []string{"apply", "-f", filepath}...)
+	cmd.Stdin = strings.NewReader("")
+	var output []string
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		log.Printf("exec Error: %s", err)
+	}
+	output = append(output, out.String())
+	fmt.Printf("%s", output)
+	return output
 }
 
 //ResetConfig resets config to defaults

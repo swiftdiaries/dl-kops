@@ -17,11 +17,11 @@ spec:
         - containerPort: 8888
         resources:
           requests:
-            alpha.kubernetes.io/nvidia-gpu: {{.NvidiaGPU}}
-            cpu: {{.CPU}}
+            alpha.kubernetes.io/nvidia-gpu: 1
+            cpu: 20
           limits:
-            alpha.kubernetes.io/nvidia-gpu: {{.NvidiaGPU}}
-            cpu: {{.CPU}}
+            alpha.kubernetes.io/nvidia-gpu: 1
+            cpu: 20
         volumeMounts:
         - name: nvidia-driver-384-111
           mountPath: /usr/local/nvidia

@@ -12,6 +12,7 @@ import (
 	"github.com/swiftdiaries/dl-kops/src/app/backend/utils"
 	"github.com/swiftdiaries/dl-kops/src/app/backend/worker"
 	"github.com/swiftdiaries/dl-kops/src/app/frontend/jobs"
+	"github.com/swiftdiaries/dl-kops/src/app/frontend/jupyter"
 )
 
 var (
@@ -29,6 +30,7 @@ func main() {
 	http.HandleFunc("/installworker", worker.InstallWorker)
 	http.HandleFunc("/setupworker", worker.SetupWorker)
 	http.HandleFunc("/gettoken", controller.GetToken)
+	http.HandleFunc("/jupyter", jupyter.LaunchJupyter)
 	http.HandleFunc("/jobs", jobs.JobSubmitHandler)
 	http.HandleFunc("/submit", jobs.RunJobs)
 	http.HandleFunc("/resetconfig", utils.ResetConfig)

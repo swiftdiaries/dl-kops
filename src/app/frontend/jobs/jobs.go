@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/swiftdiaries/dl-kops/src/app/backend/utils"
 )
@@ -29,6 +30,7 @@ func RunJobs(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, nil)
 	} else {
 		r.ParseForm()
+		device := r.FormValue("device")
 		jobTemplate := &JobTemplate{
 			Name:      r.Form["name"][0],
 			Imagename: r.Form["imagename"][0],
@@ -36,9 +38,14 @@ func RunJobs(w http.ResponseWriter, r *http.Request) {
 		for _, command := range r.Form["command"] {
 			jobTemplate.Command += " " + command
 		}
-		t, err := template.ParseFiles("./templates/cpu-job-template.yaml")
-		if err != nil {
-			fmt.Printf("Error in templating: %s", err)
+		cpuyamlfilepath := utils.HomeDir + "/templates/cpu-job-template.yaml"
+		gpuyamlfilepath := utils.HomeDir + "/templates/gpu-job-template.yaml"
+		t, err := template.ParseFiles(cpuyamlfilepath)
+		if device == "gpu" {
+			t, err = template.ParseFiles(gpuyamlfilepath)
+			if err != nil {
+				fmt.Printf("Error in templating: %s", err)
+			}
 		}
 		filename := "jobfiles/" + jobTemplate.Name + ".yaml"
 		file, err := os.Create(filename)
@@ -53,7 +60,10 @@ func RunJobs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Printf("Error in marshalling: %s", err)
 		}
-		fmt.Fprintf(w, string(b))
+		jobfilepath := utils.HomeDir + filename
+		output := utils.KubectlExecuteYaml(jobfilepath)
+		output = append(output, string(b))
+		fmt.Fprintf(w, strings.Join(output, " "))
 	}
 }
 

@@ -89,7 +89,7 @@
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary">
             <a href="#setup" class="mdl-layout__tab">Setup Kubernetes</a>
             <a href="#controller" class="mdl-layout__tab is-active">Bootstrap Cluster</a>
-            <a href="/jobs" class="mdl-layout__tab is-active">Submit Jobs</a>
+            <a href="/jobs" class="mdl-layout__tab is-active">Jobs</a>
             <a href="/jupyter" class="mdl-layout__tab is-active">Jupyter</a>
             <a href="/grafana" class="mdl-layout__tab is-active">Grafana</a>
             <a href="#about" class="mdl-layout__tab is-active">About</a>
@@ -151,15 +151,8 @@
                       <div class="button-holder">
                         <input type="submit" onclick="myfunc()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Enter">
                       </div>
+                  </form>
               </div>
-              </form>
-              <form action="/resetconfig" method="post">
-                <h4>Reset config file</h4>
-                <div class="button-holder">
-                  <input type="submit" onclick="myfunc()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Config Reset">
-                </div>
-                <br>
-              </form>
             </div>
           </section>
         </div>
@@ -168,7 +161,7 @@
         <div class="mdl-layout__tab-panel mdl-color--grey-300 is-active" id="setup">    
           <section class="section--center mdl-grid mdl-color--grey-100 mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card__title mdl-color-text--primary">
-              <h3 class="mdl-card__title-text mdl-color-text--primary">Setup Kubernetes, CUDA</h3>
+              <h3 class="mdl-card__title-text mdl-color-text--primary">Install Kubernetes, CUDA</h3>
             </div>
             <div class="mdl-card__supporting-text mdl-color-text--primary">
               <form action="/installcontroller" method="post">
@@ -244,6 +237,12 @@
                         <div class="button-holder col-sm-2">
                           <input type="submit" onclick="myfunc()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Join Worker!">
                         </div>
+                    </div>
+                  </form>
+                  <form action="/resetconfig" method="post">
+                    <h4 class="mdl-card__subtitle-text mdl-color-text--primary">Reset config file</h4>
+                    <div class="button-holder">
+                      <input type="submit" onclick="myfunc()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Config Reset">
                     </div>
                   </form>
                   </div>
