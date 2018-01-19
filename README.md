@@ -27,12 +27,19 @@ Future Work
 
 Setup
 -----
+* Requires kubectl on the local machine
+
+```bash
+    $ brew install kubectl
+```
+
 ```bash
     $ cd $GOPATH/src
     $ mkdir -p github.com/swiftdiaries
     $ cd github.com/swiftdiaries/
     $ git clone github.com/swiftdiaries/dl-kops
     $ cd dl-kops
+    $ export PORT_1=8080
     $ go run src/app/frontend/dashboard.go
 ``` 
 
