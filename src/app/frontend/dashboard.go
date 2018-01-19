@@ -31,6 +31,7 @@ func main() {
 	http.HandleFunc("/gettoken", controller.GetToken)
 	http.HandleFunc("/jobs", jobs.JobSubmitHandler)
 	http.HandleFunc("/submit", jobs.RunJobs)
+	http.HandleFunc("/resetconfig", utils.ResetConfig)
 	go open("http://localhost:" + port + "/")
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

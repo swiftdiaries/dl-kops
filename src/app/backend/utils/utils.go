@@ -2,8 +2,11 @@ package utils
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
 	"strings"
@@ -69,4 +72,37 @@ func GetCreds(role string) (string, string, string) {
 		return cluster.Controller.Hostname, cluster.Controller.Hostip, cluster.Controller.Keyfilepath
 	}
 	return cluster.Worker.Hostname, cluster.Worker.Hostip, cluster.Worker.Keyfilepath
+}
+
+//ResetConfig resets config to defaults
+func ResetConfig(w http.ResponseWriter, r *http.Request) {
+	hostname := "ubuntu"
+	hostip := "0.0.0.1"
+	keyfile := "/Users/Name/key.key"
+	viper.SetConfigName("config")
+	viper.AddConfigPath(HomeDir)
+	err := viper.ReadInConfig()
+	if err != nil {
+		fmt.Printf("Error reading in config")
+	}
+	var cluster ClusterConfig
+	err = viper.Unmarshal(&cluster)
+	if err != nil {
+		fmt.Printf("Error in unmarshalling: %s", err)
+	}
+	cluster.Controller.Hostname = hostname
+	cluster.Controller.Hostip = hostip
+	cluster.Controller.Keyfilepath = keyfile
+	cluster.Worker.Hostname = hostname
+	cluster.Worker.Hostip = hostip
+	cluster.Worker.Keyfilepath = keyfile
+	b, err := json.Marshal(cluster)
+	if err != nil {
+		fmt.Printf("Error in marshalling: %s", err)
+	}
+	err = ioutil.WriteFile("config.yaml", b, 0644)
+	if err != nil {
+		fmt.Printf("Error in writing:%s", err)
+	}
+	fmt.Fprintf(w, "Reset successfully")
 }

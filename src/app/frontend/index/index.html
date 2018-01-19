@@ -90,7 +90,8 @@
             <a href="#setup" class="mdl-layout__tab">Setup Kubernetes</a>
             <a href="#controller" class="mdl-layout__tab is-active">Bootstrap Cluster</a>
             <a href="/jobs" class="mdl-layout__tab is-active">Submit Jobs</a>
-            <a href="/jupyter" class="mdl-layout__tab is-active">Launch Jupyter</a>
+            <a href="/jupyter" class="mdl-layout__tab is-active">Jupyter</a>
+            <a href="/grafana" class="mdl-layout__tab is-active">Grafana</a>
             <a href="#about" class="mdl-layout__tab is-active">About</a>
           </div>
       </header>
@@ -148,11 +149,18 @@
                         <input type="text" name="keyfile" class="form-control mb-2" id="inlineFormInput" placeholder="~/cloud.pem">
                       </div> 
                       <div class="button-holder">
-                    <input type="submit" onclick="myfunc()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Enter">
-                  </div>
+                        <input type="submit" onclick="myfunc()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Enter">
+                      </div>
               </div>
               </form>
-              </div>
+              <form action="/resetconfig" method="post">
+                <h4>Reset config file</h4>
+                <div class="button-holder">
+                  <input type="submit" onclick="myfunc()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Config Reset">
+                </div>
+                <br>
+              </form>
+            </div>
           </section>
         </div>
       </main>

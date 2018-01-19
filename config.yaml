@@ -1,1 +1,1 @@
-{"Controller":{"hostname":"ubuntu","hostip":"129.114.108.78","keyfilepath":"/Users/Adhita/cloud.pem"},"Worker":{"hostname":"ubuntu","hostip":"129.114.108.87","keyfilepath":"/Users/Adhita/Desktop/chameleon.pem"}}
+{"Controller":{"hostname":"ubuntu","hostip":"0.0.0.1","keyfilepath":"/Users/Name/key.key"},"Worker":{"hostname":"ubuntu","hostip":"0.0.0.1","keyfilepath":"/Users/Name/key.key"}}
