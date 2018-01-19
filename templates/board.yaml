@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tensorboard
+  name: tensorboard
+spec:
+  ports:
+  - port: 6006
+    targetPort: 6006
+  selector:
+    app: tensorboard
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tensorboard
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tensorboard
+    spec:
+      containers:
+      - name: tensorflow
+        command: ["/bin/sh", "-c"]
+        args: ["tensorboard --log-dir=/tmp"]
+        image: swiftdiaries/dl-kopsjupyter
+        ports:
+        - containerPort: 6006
+        resources:
+          limits:
+            alpha.kubernetes.io/nvidia-gpu: 1
+        volumeMounts:
+        - name: nvidia-driver-384-111
+          mountPath: /usr/local/nvidia
+          readOnly: true
+        - name: libcuda-so
+          mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so
+        - name: libcuda-so-1
+          mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.1
+        - name: libcuda-so-384-111
+          mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.384.111
+          readOnly: true
+      volumes:
+      - name: nvidia-driver-384-111
+        hostPath:
+          path: /usr/lib/nvidia-384
+      - name: libcuda-so
+        hostPath:
+          path: /usr/lib/x86_64-linux-gnu/libcuda.so
+      - name: libcuda-so-1
+        hostPath:
+          path: /usr/lib/x86_64-linux-gnu/libcuda.so.1
+      - name: libcuda-so-384-111
+        hostPath:
+          path: /usr/lib/x86_64-linux-gnu/libcuda.so.384.111

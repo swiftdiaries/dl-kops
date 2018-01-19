@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tensorflow-alexnet-gpu
+spec:
+  containers:
+  - name: tensorflow-alexnet-gpu
+    image: tensorflow/tensorflow:latest-gpu
+    command: 
+    - "python"
+    - "-c"
+    - "import tensorflow as tf"
+    resources:
+      requests:
+        alpha.kubernetes.io/nvidia-gpu: 2
+        cpu: 24
+      limits:
+        alpha.kubernetes.io/nvidia-gpu: 2
+        cpu: 24
+    volumeMounts:
+    - name: nvidia-driver-384-111
+      mountPath: /usr/local/nvidia
+      readOnly: true
+    - name: libcuda-so
+      mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so
+    - name: libcuda-so-1
+      mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.1
+    - name: libcuda-so-384-111
+      mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.384.111
+      readOnly: true
+  restartPolicy: Never
+  volumes:
+  - name: nvidia-driver-384-111
+    hostPath:
+      path: /usr/lib/nvidia-384
+  - name: libcuda-so
+    hostPath:
+      path: /usr/lib/x86_64-linux-gnu/libcuda.so
+  - name: libcuda-so-1
+    hostPath:
+      path: /usr/lib/x86_64-linux-gnu/libcuda.so.1
+  - name: libcuda-so-384-111
+    hostPath:
+      path: /usr/lib/x86_64-linux-gnu/libcuda.so.384.111

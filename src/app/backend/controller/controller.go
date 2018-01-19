@@ -2,42 +2,63 @@ package controller
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"os/exec"
 	"strings"
 
 	"github.com/alecthomas/template"
+	"github.com/spf13/viper"
 	"github.com/swiftdiaries/dl-kops/src/app/backend"
+	"github.com/swiftdiaries/dl-kops/src/app/backend/utils"
 )
+
+//RegisterController and write to file again.
+func RegisterController(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("method:", r.Method)
+	if r.Method == "POST" {
+		r.ParseForm()
+		hostname := r.FormValue("hostname")
+		hostip := r.FormValue("hostip")
+		keyfile := r.FormValue("keyfile")
+		keyfile = strings.Replace(keyfile, "~", os.Getenv("HOME"), 1)
+		viper.SetConfigName("config")
+		viper.AddConfigPath(utils.HomeDir)
+		err := viper.ReadInConfig()
+		if err != nil {
+			fmt.Printf("Error reading in config")
+		}
+		var cluster utils.ClusterConfig
+		err = viper.Unmarshal(&cluster)
+		if err != nil {
+			fmt.Printf("Error in unmarshalling: %s", err)
+		}
+		cluster.Controller.Hostname = hostname
+		cluster.Controller.Hostip = hostip
+		cluster.Controller.Keyfilepath = keyfile
+		b, err := json.Marshal(cluster)
+		if err != nil {
+			fmt.Printf("Error in marshalling: %s", err)
+		}
+		err = ioutil.WriteFile("config.yaml", b, 0644)
+		if err != nil {
+			fmt.Printf("Error in writing:%s", err)
+		}
+	}
+}
 
 //SetupController is used to setup kubernetes on the controller node
 func SetupController(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "POST" {
-		r.ParseForm()
-		hostname := r.Form["hostname"][0]
-		hostip := r.Form["hostip"][0]
-		keyfile := r.Form["keyfile"][0]
+		hostname, hostip, keyfile := utils.GetCreds("controller")
 		var output []string
-		//args = []string{"./scripts/trial.sh", hostip}
-		command := "./controllerkubeup.sh " + hostip
+		command := utils.HomeDir + "/controllerkubeup.sh " + hostip
 		output = backend.ExecuteSSHCommand(hostname, hostip, keyfile, command)
-		/*
-			shcmd := "sh"
-			var args []string
-			args = []string{"./scripts/controllerkubeup.sh", hostip}
-			cmd := exec.Command(shcmd, args...)
-			cmd.Stdin = strings.NewReader("")
-			var out bytes.Buffer
-			cmd.Stdout = &out
-			err := cmd.Run()
-			if err != nil {
-				log.Fatalf("exec Error: %s", err)
-			}
-			output = append(output, out.String())
-		*/
 		fmt.Fprintf(w, "%s", output)
 	}
 }
@@ -46,16 +67,12 @@ func SetupController(w http.ResponseWriter, r *http.Request) {
 func InstallController(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "POST" {
-		r.ParseForm()
-		//fmt.Printf("name:%s,\nip:%s\nkey:%s\n", r.Form["hostname"], r.Form["hostip"], r.Form["keyfile"])
-		hostname := r.Form["hostname"][0]
-		hostip := r.Form["hostip"][0]
-		keyfile := r.Form["keyfile"][0]
+		hostname, hostip, keyfile := utils.GetCreds("controller")
 		shcmd := "sh"
 		var args []string
 		var output []string
-		//args = []string{"./scripts/trial.sh", hostname, keyfile, hostip}
-		args = []string{"./scripts/setup_controller.sh", hostname, keyfile, hostip}
+		scriptfilepath := utils.HomeDir + "/scripts/setup_controller.sh "
+		args = []string{scriptfilepath, hostname, keyfile, hostip}
 		fmt.Printf("Args: %s", args)
 		cmd := exec.Command(shcmd, args...)
 		cmd.Stdin = strings.NewReader("")
@@ -66,10 +83,10 @@ func InstallController(w http.ResponseWriter, r *http.Request) {
 			log.Fatalf("exec Error: %s", err)
 		}
 		output = append(output, out.String())
-
 		fmt.Fprintf(w, "%s", output)
 	} else {
-		t, _ := template.ParseFiles("./result/result.html")
+		htmlfilepath := utils.HomeDir + "/result/result.html"
+		t, _ := template.ParseFiles(htmlfilepath)
 		t.Execute(w, nil)
 	}
 }
@@ -78,33 +95,13 @@ func InstallController(w http.ResponseWriter, r *http.Request) {
 func GetToken(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "POST" {
-		r.ParseForm()
-		//fmt.Printf("name:%s,\nip:%s\nkey:%s\n", r.Form["hostname"], r.Form["hostip"], r.Form["keyfile"])
-		hostname := r.Form["hostname"][0]
-		hostip := r.Form["hostip"][0]
-		keyfile := r.Form["keyfile"][0]
+		hostname, hostip, keyfile := utils.GetCreds("controller")
 		var output []string
 		output = backend.ExecuteSSHCommand(hostname, hostip, keyfile, "kubeadm token generate")
-		/*
-			shcmd := "sh"
-			var args []string
-			//args = []string{"./scripts/trial.sh", hostname, keyfile, hostip}
-			args = []string{"kubeadm generate token", hostname, keyfile, hostip}
-			fmt.Printf("Args: %s", args)
-			cmd := exec.Command(shcmd, args...)
-			cmd.Stdin = strings.NewReader("")
-			var out bytes.Buffer
-			cmd.Stdout = &out
-			err := cmd.Run()
-			if err != nil {
-				log.Fatalf("exec Error: %s", err)
-			}
-			output = append(output, out.String())
-		*/
-
 		fmt.Fprintf(w, "%s", output)
 	} else {
-		t, _ := template.ParseFiles("./result/result.html")
+		htmlfilepath := utils.HomeDir + "/result/result.html"
+		t, _ := template.ParseFiles(htmlfilepath)
 		t.Execute(w, nil)
 	}
 }

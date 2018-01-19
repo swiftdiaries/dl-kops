@@ -6,6 +6,8 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+
+	"github.com/swiftdiaries/dl-kops/src/app/backend/utils"
 )
 
 //JobTemplate to hold job parameters
@@ -15,11 +17,15 @@ type JobTemplate struct {
 	Command   string
 }
 
+var (
+	jobshtmlpath = utils.HomeDir + "/src/app/frontend/jobs/jobs.html"
+)
+
 //RunJobs submitted jobs are executed on the cluster
 func RunJobs(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Method:" + r.Method)
 	if r.Method == "GET" {
-		t, _ := template.ParseFiles("./src/app/frontend/jobs/jobs.html")
+		t, _ := template.ParseFiles(jobshtmlpath)
 		t.Execute(w, nil)
 	} else {
 		r.ParseForm()
@@ -47,8 +53,6 @@ func RunJobs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Printf("Error in marshalling: %s", err)
 		}
-		//var output []string
-		//output =
 		fmt.Fprintf(w, string(b))
 	}
 }
@@ -57,7 +61,7 @@ func RunJobs(w http.ResponseWriter, r *http.Request) {
 func JobSubmitHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Method:" + r.Method)
 	if r.Method == "GET" {
-		t, _ := template.ParseFiles("./src/app/frontend/jobs/jobs.html")
+		t, _ := template.ParseFiles(jobshtmlpath)
 		t.Execute(w, nil)
 	}
 }

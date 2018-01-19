@@ -9,6 +9,7 @@ import (
 	"runtime"
 
 	"github.com/swiftdiaries/dl-kops/src/app/backend/controller"
+	"github.com/swiftdiaries/dl-kops/src/app/backend/utils"
 	"github.com/swiftdiaries/dl-kops/src/app/backend/worker"
 	"github.com/swiftdiaries/dl-kops/src/app/frontend/jobs"
 )
@@ -18,11 +19,13 @@ var (
 )
 
 func main() {
-
-	fileServerIndex := http.FileServer(http.Dir("./src/app/frontend/index/"))
+	indexfilepath := utils.HomeDir + "/src/app/frontend/index/"
+	fileServerIndex := http.FileServer(http.Dir(indexfilepath))
 	http.Handle("/", fileServerIndex)
+	http.HandleFunc("/registercontroller", controller.RegisterController)
 	http.HandleFunc("/installcontroller", controller.InstallController)
 	http.HandleFunc("/setupcontroller", controller.SetupController)
+	http.HandleFunc("/registerworker", worker.RegisterWorker)
 	http.HandleFunc("/installworker", worker.InstallWorker)
 	http.HandleFunc("/setupworker", worker.SetupWorker)
 	http.HandleFunc("/gettoken", controller.GetToken)

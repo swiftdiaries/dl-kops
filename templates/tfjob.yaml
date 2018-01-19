@@ -1,0 +1,15 @@
+apiVersion: tensorflow.org/v1alpha1
+kind: TfJob
+metadata:
+  name: module5-ex1-gpu
+spec:
+  replicaSpecs:
+    - template:
+        spec:
+          containers:
+            - image: wbuchwalter/tf-mnist:gpu
+              name: tensorflow
+              resources:
+                requests:
+                  alpha.kubernetes.io/nvidia-gpu: 1
+          restartPolicy: OnFailure

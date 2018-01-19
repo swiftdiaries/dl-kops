@@ -1,25 +1,59 @@
 package worker
 
 import (
-	"bytes"
+	"encoding/json"
 	"fmt"
-	"log"
+	"io/ioutil"
 	"net/http"
-	"os/exec"
+	"os"
 	"strings"
 
 	"github.com/alecthomas/template"
+	"github.com/spf13/viper"
 	"github.com/swiftdiaries/dl-kops/src/app/backend"
+	"github.com/swiftdiaries/dl-kops/src/app/backend/utils"
 )
 
-//SetupWorker is used to setup kubernetes on the controller node
-func SetupWorker(w http.ResponseWriter, r *http.Request) {
+//RegisterWorker Registers worker into config
+func RegisterWorker(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "POST" {
 		r.ParseForm()
 		hostname := r.Form["hostname"][0]
 		hostip := r.Form["hostip"][0]
 		keyfile := r.Form["keyfile"][0]
+		keyfile = strings.Replace(keyfile, "~", os.Getenv("HOME"), 1)
+		viper.SetConfigName("config")
+		viper.AddConfigPath(utils.HomeDir)
+		err := viper.ReadInConfig()
+		if err != nil {
+			fmt.Printf("Error reading in config")
+		}
+		var cluster utils.ClusterConfig
+		err = viper.Unmarshal(&cluster)
+		if err != nil {
+			fmt.Printf("Error in unmarshalling: %s", err)
+		}
+		cluster.Worker.Hostname = hostname
+		cluster.Worker.Hostip = hostip
+		cluster.Worker.Keyfilepath = keyfile
+		b, err := json.Marshal(cluster)
+		if err != nil {
+			fmt.Printf("Error in marshalling: %s", err)
+		}
+		err = ioutil.WriteFile("config.yaml", b, 0644)
+		if err != nil {
+			fmt.Printf("Error in writing:%s", err)
+		}
+	}
+}
+
+//SetupWorker is used to setup kubernetes on the controller node
+func SetupWorker(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("method:", r.Method)
+	if r.Method == "POST" {
+		r.ParseForm()
+		hostname, hostip, keyfile := utils.GetCreds("worker")
 		masterip := r.Form["masterip"][0]
 		jointoken := r.Form["jointoken"][0]
 		certs := r.Form["certs"][0]
@@ -27,21 +61,6 @@ func SetupWorker(w http.ResponseWriter, r *http.Request) {
 		command := "./workerup.sh " + jointoken + " " + masterip + " " + certs
 		fmt.Println("Join worker: \n" + hostname + "\n" + hostip + "\n" + keyfile + masterip + "\n" + jointoken + "\n" + certs)
 		output = backend.ExecuteSSHCommand(hostname, hostip, keyfile, command)
-		/*
-			shcmd := "sh"
-			var args []string
-			//args = []string{"./scripts/trial.sh", hostip, jointoken}
-			args = []string{"./scripts/workerup.sh", jointoken, hostip}
-			cmd := exec.Command(shcmd, args...)
-			cmd.Stdin = strings.NewReader("")
-			var out bytes.Buffer
-			cmd.Stdout = &out
-			err := cmd.Run()
-			if err != nil {
-				log.Fatalf("exec Error: %s", err)
-			}
-			output = append(output, out.String())
-		*/
 		fmt.Fprintf(w, "%s", output)
 	}
 }
@@ -50,30 +69,16 @@ func SetupWorker(w http.ResponseWriter, r *http.Request) {
 func InstallWorker(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "POST" {
-		r.ParseForm()
-		//fmt.Printf("name:%s,\nip:%s\nkey:%s\n", r.Form["hostname"], r.Form["hostip"], r.Form["keyfile"])
-		hostname := r.Form["hostname"][0]
-		hostip := r.Form["hostip"][0]
-		keyfile := r.Form["keyfile"][0]
-		shcmd := "sh"
-		var args []string
+		hostname, hostip, keyfile := utils.GetCreds("worker")
+		filepath := utils.HomeDir + "/scripts/setup_worker.sh"
+		var arguments []string
 		var output []string
-		//args = []string{"./scripts/trial.sh", hostname, keyfile, hostip}
-		args = []string{"./scripts/setup_worker.sh", hostname, keyfile, hostip}
-		fmt.Printf("Args: %s", args)
-		cmd := exec.Command(shcmd, args...)
-		cmd.Stdin = strings.NewReader("")
-		var out bytes.Buffer
-		cmd.Stdout = &out
-		err := cmd.Run()
-		if err != nil {
-			log.Fatalf("exec Error: %s", err)
-		}
-		output = append(output, out.String())
-
+		arguments = []string{hostname, keyfile, hostip}
+		output = utils.ExecuteScriptFile(filepath, arguments)
 		fmt.Fprintf(w, "%s", output)
 	} else {
-		t, _ := template.ParseFiles("./result/result.html")
+		resultfilepath := utils.HomeDir + "/result/result.html"
+		t, _ := template.ParseFiles(resultfilepath)
 		t.Execute(w, nil)
 	}
 }
