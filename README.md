@@ -45,6 +45,17 @@ Setup
 
 Go to http://localhost:8081/ on your browser.
 
+Get Involved
+------------
+
+### Contributing
+* If you have a cool new feature in mind, please consider creating an Issue or even better, a Pull Request.
+* If you are annoyed by the loading GIF, please do consider contributing.
+* Please feel free take a look at the Issues and contribute to any of them. 
+
+I would love feedback and comments,
+* [Twitter](https://twitter.com/adhitadselvaraj)
+* Kubernetes and Golang slack (adhita). 
 
 Landing Page
 ------------
