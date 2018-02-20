@@ -7,6 +7,10 @@ RUN DEBIAN_FRONTEND=noninteractive \
 	git \
 	&& rm -rf /var/lib/apt/lists/*
 
+RUN pip --no-cache-dir install \
+        http://download.pytorch.org/whl/cu80/torch-0.3.1-cp27-cp27mu-linux_x86_64.whl \
+		torchvision
+        
 ENV LD_LIBRARY_PATH /usr/local/nvidia${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 
 ENV PATH /usr/local/cuda-8.0/targets/x86_64-linux/lib/stubs${PATH:+:${PATH}}
