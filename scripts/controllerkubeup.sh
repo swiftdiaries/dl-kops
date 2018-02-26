@@ -21,7 +21,7 @@ sudo sed -i -e 's/ExecStart=\/usr\/bin\/kubelet /ExecStart=\/usr\/bin\/kubelet -
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
 sudo kubeadm reset
-sudo kubeadm init --apiserver-advertise-address=$ipaddress
+sudo kubeadm init --apiserver-advertise-address=$ipaddress --pod-network-cidr=192.168.0.0/16
 mkdir -p $HOME/.kube
 sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
