@@ -31,7 +31,7 @@ do
     FILE_NAME=$file
 done
 echo "Chosen ${FILE_NAME} as kubeadm.conf"
-sudo sed -i -e "s/ExecStart=\/usr\/bin\/kubelet /ExecStart=\/usr\/bin\/kubelet --feature-gates="Accelerators=true" /g" $FILE_NAME
+sudo sed -i -e "s/ExecStart=\/usr\/bin\/kubelet /ExecStart=\/usr\/bin\/kubelet --feature-gates="DevicePlugins=true" /g" $FILE_NAME
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
 sudo kubeadm join --token $token $masterIPaddress:6443 --discovery-token-ca-cert-hash $certs
