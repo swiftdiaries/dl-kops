@@ -15,7 +15,7 @@ cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 apt-get update'
-sudo apt-get install -yf kubelet kubeadm kubectl kubernetes-cni
+sudo apt-get install -yf kubelet kubeadm=1.9.0-00 kubectl kubernetes-cni
 echo "######################### NVIDIA-DOCKER ##########################################"
 wget https://github.com/NVIDIA/nvidia-docker/releases/download/v1.0.1/nvidia-docker_1.0.1-1_amd64.deb
 sudo apt-get install -f
