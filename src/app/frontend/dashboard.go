@@ -20,8 +20,7 @@ var (
 )
 
 func main() {
-	indexfilepath := utils.HomeDir + "/src/app/frontend/index/"
-	fileServerIndex := http.FileServer(http.Dir(indexfilepath))
+	fileServerIndex := http.FileServer(http.Dir("index/"))
 	http.Handle("/", fileServerIndex)
 	http.HandleFunc("/registercontroller", controller.RegisterController)
 	http.HandleFunc("/installcontroller", controller.InstallController)

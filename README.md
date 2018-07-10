@@ -38,9 +38,9 @@ Setup
     $ mkdir -p github.com/swiftdiaries
     $ cd github.com/swiftdiaries/
     $ git clone github.com/swiftdiaries/dl-kops
-    $ cd dl-kops
-    $ export PORT_1=8080
-    $ go run src/app/frontend/dashboard.go
+    $ cd dl-kops/src/app/frontend
+    $ export PORT_1=8081
+    $ go run dashboard.go
 ``` 
 
 Go to http://localhost:8081/ on your browser.
