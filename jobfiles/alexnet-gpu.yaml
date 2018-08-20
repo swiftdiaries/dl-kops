@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: alexnet-gpu
-    image: swiftdiaries/bench
+    image: swiftdiaries/bench:0.1
     command: 
     - "/bin/bash"
     - "-c"

@@ -1,1 +1,2 @@
-scripts/main.go
+.vscode
+jobfiles/alexnet-gpu.yaml
