@@ -33,7 +33,8 @@ func main() {
 	http.HandleFunc("/jobs", jobs.JobSubmitHandler)
 	http.HandleFunc("/submit", jobs.RunJobs)
 	http.HandleFunc("/resetconfig", utils.ResetConfig)
-	go open("http://localhost:" + port + "/")
+	//go open("http://localhost:" + port + "/")
+	log.Println("Listening on", ":"+port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
